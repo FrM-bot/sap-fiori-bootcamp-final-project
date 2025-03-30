@@ -1,20 +1,19 @@
-const Endoints = {
+const Endpoints = {
     suppliers:"/Suppliers"
 }
 
-sap.ui.define([], function () {
-    "use strict"
+sap.ui.define([], () => {
 
     return {
-        getSuppliers: async function (onModel, onFilters) {
+        async getSuppliers (onModel, onFilters) {
             const aPromiseRequest = [
-                new Promise(function (resolve, reject) {
-                    onModel.read(Endoints.suppliers, {
+                new Promise((resolve, reject) => {
+                    onModel.read(Endpoints.suppliers, {
                         filters: onFilters,
                         success: resolve,
                         error: reject
                     })
-                }.bind(this))
+                })
             ]
 
             return Promise.all(aPromiseRequest)

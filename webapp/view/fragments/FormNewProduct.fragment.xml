@@ -1,11 +1,9 @@
-<mvc:View
-    controllerName="com.bootcamp.sapui5.finalproject.controller.Details"
-    xmlns:mvc="sap.ui.core.mvc"
+<core:FragmentDefinition
     xmlns="sap.m"
-    xmlns:f="sap.ui.layout.form"
     xmlns:core="sap.ui.core"
+    controllerName="com.bootcamp.sapui5.finalproject.controller.Details"
+    xmlns:f="sap.ui.layout.form"
 >
-
     <f:SimpleForm
         id="SimpleFormDisplay354"
         editable="false"
@@ -53,5 +51,4 @@
             <Text text="{Phone}" />
         </f:content>
     </f:SimpleForm>
-
-</mvc:View>
+</core:FragmentDefinition>

@@ -38,7 +38,8 @@
             <ColumnListItem
                 vAlign="Middle"
                 type="Active"
-                press="onItemPress"
+                press="onOpenPopoverDialog"
+                bindingContext="{Products}"
             >
                 <cells>
                     <Text text="{ProductID}" />

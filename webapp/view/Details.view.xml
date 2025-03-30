@@ -10,7 +10,7 @@
         title="{CompanyName}"
     >
         <core:Fragment
-            fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.FormDetails"
+            fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.FormSupplierDetails"
             type="XML"
         />
         <core:Fragment

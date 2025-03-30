@@ -3,9 +3,9 @@ const RouteNames = {
     details: 'details'
 }
 
-sap.ui.define([], function () {
+sap.ui.define([], () => {
     return {
-        getRouteNames: function () {
+        getRouteNames() {
             return RouteNames
         }
     }
