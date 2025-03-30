@@ -9,7 +9,7 @@ sap.ui.define([
             const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute(oRouteNames.details).attachPatternMatched(this._onObjectMatched, this);
 
-            console.log(this.getView().getModel())
+            console.log(this.getView())
         },
 
         _onObjectMatched: function (oEvent) {

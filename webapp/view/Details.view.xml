@@ -7,10 +7,15 @@
 >
     <Page
         id="pageDetail"
-        title="{i18n>titleDetails}"
+        title="{CompanyName}"
     >
-        <Text
-            text="{SupplierID}"
+        <core:Fragment
+            fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.FormDetails"
+            type="XML"
+        />
+        <core:Fragment
+            fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.ProductsTable"
+            type="XML"
         />
     </Page>
 </mvc:View>
