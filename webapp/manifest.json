@@ -95,12 +95,25 @@
           "target": [
             "TargetHome"
           ]
+        },
+        {
+          "name": "details",
+          "pattern": "details/{SupplierID}",
+          "target": [
+            "TargetHome",
+            "details"
+          ]
         }
       ],
       "targets": {
         "TargetHome": {
           "id": "Home",
           "name": "Home"
+        },
+        "details": {
+          "viewId": "details",
+          "viewName": "Details",
+          "viewLevel": 2
         }
       }
     },

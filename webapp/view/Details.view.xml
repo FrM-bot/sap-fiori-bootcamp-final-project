@@ -1,0 +1,16 @@
+<mvc:View
+    controllerName="com.bootcamp.sapui5.finalproject.controller.Details"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="pageDetail"
+        title="{i18n>titleDetails}"
+    >
+        <Text
+            text="{SupplierID}"
+        />
+    </Page>
+</mvc:View>
