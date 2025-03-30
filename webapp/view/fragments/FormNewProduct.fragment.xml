@@ -1,0 +1,54 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="com.bootcamp.sapui5.finalproject.controller.Details"
+    xmlns:f="sap.ui.layout.form"
+>
+    <f:SimpleForm
+        id="SimpleFormDisplay354"
+        editable="false"
+        layout="ResponsiveGridLayout"
+        labelSpanXL="3"
+        labelSpanL="3"
+        labelSpanM="3"
+        labelSpanS="12"
+        adjustLabelSpan="false"
+        emptySpanXL="4"
+        emptySpanL="4"
+        emptySpanM="4"
+        emptySpanS="0"
+        columnsXL="1"
+        columnsL="1"
+        columnsM="1"
+        singleContainerFullSize="false"
+    >
+        <f:content>
+            <Label text="Supplier ID" />
+            <Text text="{SupplierID}" />
+
+            <Label text="Company Name" />
+            <Text text="{CompanyName}" />
+
+            <Label text="Contact Name" />
+            <Text text="{ContactName}" />
+
+            <Label text="Contact Title" />
+            <Text text="{ContactTitle}" />
+
+            <Label text="Country" />
+            <Text text="{Country}" />
+
+            <Label text="City" />
+            <Text text="{City}" />
+
+            <Label text="Address" />
+            <Text text="{Address}" />
+
+            <Label text="Postal Code" />
+            <Text text="{PostalCode}" />
+
+            <Label text="Phone" />
+            <Text text="{Phone}" />
+        </f:content>
+    </f:SimpleForm>
+</core:FragmentDefinition>

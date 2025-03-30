@@ -3,18 +3,17 @@ const ModelNames = {
     Suppliers: "Suppliers"
 }
 
-sap.ui.define([
+sap.ui.define([ 
     'com/bootcamp/sapui5/finalproject/services/Home.services',
     "sap/ui/model/json/JSONModel"
-], function (HomeService, JSONModel) {
-    "use strict"
+], (HomeService, JSONModel) => {
 
     return {
-        init: function (onNorthwindModel) {
+        init(onNorthwindModel) {
             this._onNorthwindModel = onNorthwindModel
         },
 
-        getDataSuppliers: async function(onFilters) {
+        async getDataSuppliers(onFilters) {
             return HomeService.getSuppliers(this._onNorthwindModel, onFilters)
         },
 
@@ -26,7 +25,7 @@ sap.ui.define([
         //     }), ModelNames.LocalModel)
         // },
 
-        setSuppliersModel: async function(oController, oDatos) {
+        async setSuppliersModel (oController, oDatos) {
             let oListModel = oController.getOwnerComponent().getModel(ModelNames.Suppliers)
 
             if (!oListModel) {
@@ -39,7 +38,7 @@ sap.ui.define([
             oListModel.setData(oDatos)
         },
 
-        getModelNames: function () {
+        getModelNames() {
             return ModelNames
         }
     }

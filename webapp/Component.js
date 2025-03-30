@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "com/bootcamp/sapui5/finalproject/model/models",
-    "com/bootcamp/sapui5/finalproject/utils/Home.utils"
+    "com/bootcamp/sapui5/finalproject/utils/Home.utils",
+    "com/bootcamp/sapui5/finalproject/utils/Details.utils"
 ], (UIComponent, models, HomeUtils) => {
 
     return UIComponent.extend("com.bootcamp.sapui5.finalproject.Component", {

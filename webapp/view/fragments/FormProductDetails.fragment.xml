@@ -1,0 +1,51 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    controllerName="com.bootcamp.sapui5.finalproject.controller.Details"
+    xmlns:f="sap.ui.layout.form"
+>
+    <f:SimpleForm
+        id="ProductDetailsForm"
+        editable="false"
+        layout="ResponsiveGridLayout"
+        labelSpanXL="3"
+        labelSpanL="3"
+        labelSpanM="3"
+        labelSpanS="12"
+        adjustLabelSpan="false"
+        emptySpanXL="4"
+        emptySpanL="4"
+        emptySpanM="4"
+        emptySpanS="0"
+        columnsXL="1"
+        columnsL="1"
+        columnsM="1"
+        singleContainerFullSize="false"
+    >
+        <f:content>
+            <Label text="Product ID" />
+            <Text text="{DialogProduct>/ProductID}" />
+
+            <Label text="Product Name" />
+            <Text text="{DialogProduct>/ProductName}" />
+
+            <Label text="Unit Price" />
+            <Text text="{DialogProduct>/UnitPrice}" />
+
+            <Label text="Quantity Per Unit" />
+            <Text text="{DialogProduct>/QuantityPerUnit}" />
+
+            <Label text="Units In Stock" />
+            <Text text="{DialogProduct>/UnitsInStock}" />
+
+            <Label text="Units On Order" />
+            <Text text="{DialogProduct>/UnitsOnOrder}" />
+
+            <Label text="Reorder Level" />
+            <Text text="{DialogProduct>/ReorderLevel}" />
+
+            <Label text="Discontinued" />
+            <Text text="{= ${DialogProduct>/Discontinued} ? 'Yes' : 'No' }" />
+        </f:content>
+    </f:SimpleForm>
+</core:FragmentDefinition>

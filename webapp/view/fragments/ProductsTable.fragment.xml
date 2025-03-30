@@ -1,0 +1,66 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Table
+        inset="false"
+        items="{
+                path: 'Products',
+                sorter: {
+                    path: 'ProductName'
+                }
+            }"
+    >
+        <columns>
+            <Column>
+                <Text text="{i18n>ProductID}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>CategoryID}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>Product}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>UnitPrice}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>UnitsInStock}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>QuantityPerUnit}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>SupplierID}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem
+                vAlign="Middle"
+                type="Active"
+                press="onOpenPopoverDialog"
+                bindingContext="{Products}"
+            >
+                <cells>
+                    <Text text="{ProductID}" />
+
+                    <Text text="{CategoryID}" />
+
+                    <Text text="{ProductName}" />
+
+                    <ObjectNumber
+                        number="{
+                            parts:[{path:'UnitPrice'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: true}
+                        }"
+                        unit="USD"
+                    />
+                    <Text text="{UnitsInStock}" />
+                    <Text text="{QuantityPerUnit}" />
+                    <Text text="{SupplierID}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>
