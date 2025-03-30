@@ -3,7 +3,6 @@ sap.ui.define([
     "com/bootcamp/sapui5/finalproject/model/models",
     "com/bootcamp/sapui5/finalproject/utils/Home.utils"
 ], (UIComponent, models, HomeUtils) => {
-    "use strict";
 
     return UIComponent.extend("com.bootcamp.sapui5.finalproject.Component", {
         metadata: {
