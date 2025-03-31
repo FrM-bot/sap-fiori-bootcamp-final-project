@@ -4,15 +4,18 @@ sap.ui.define(
 		"com/bootcamp/sapui5/finalproject/utils/Routes.utils",
 		"com/bootcamp/sapui5/finalproject/utils/Details.utils",
 		"sap/ui/core/routing/History",
-		"sap/ui/core/UIComponent"
+		"sap/ui/core/UIComponent",
+		"com/bootcamp/sapui5/finalproject/utils/Products.utils",
 	],
-	(Controller, RoutesUtils, DetailsUtils, History, UIComponent) => {
+	(Controller, RoutesUtils, DetailsUtils, History, UIComponent, ProductsUtils) => {
 		return Controller.extend(
 			"com.bootcamp.sapui5.finalproject.controller.Details",
 			{
 				onInit() {
 					const oRouteNames = RoutesUtils.getRouteNames()
 					this.oRouteNames = RoutesUtils.getRouteNames()
+
+					ProductsUtils.init(this)
 
 					const oRouter = this.getRouter()
 

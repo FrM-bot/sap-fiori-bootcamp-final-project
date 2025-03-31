@@ -134,20 +134,6 @@
                     />
                 </template>
             </Column>
-
-            <Column
-                width="11rem"
-                showSortMenuEntry="false"
-                sortProperty="Phone"
-            >
-                <m:Label text="Phone" />
-                <template>
-                    <m:Text
-                        text="{Phone}"
-                        wrapping="false"
-                    />
-                </template>
-            </Column>
         </columns>
     </Table>
 </core:FragmentDefinition>

@@ -19,7 +19,7 @@ sap.ui.define([
 
 			this.oRouter = this.getOwnerComponent().getRouter()
 
-			SupplierFilters.setInitModelLocalData(this, [])
+			SupplierFilters.init(this)
 
 			try {
 				const oDatos = await HomeUtils.getDataSuppliers([])
@@ -80,13 +80,13 @@ sap.ui.define([
 		},
 
 		clearAllSortings() {
-			const oTable = this.byId("table");
+			const oTable = this.byId("suppliersTable");
 			oTable.getBinding().sort(null);
 			this._resetSortingState();
 		},
 
 		_resetSortingState: function() {
-			const oTable = this.byId("table");
+			const oTable = this.byId("suppliersTable");
 			const aColumns = oTable.getColumns();
 			for (let i = 0; i < aColumns.length; i++) {
 				aColumns[i].setSortOrder(SortOrder.None);
@@ -112,25 +112,26 @@ sap.ui.define([
 			// const aFilters = [];
 			const sQuery = oEvent.getSource().getValue()
 
-			if (field === 'SupplierID') {
+			const isSearchingSupplierID = field === 'SupplierID'
+
+			if (isSearchingSupplierID) {
+				console.log(Number(sQuery))
 				const filter = new Filter(field, FilterOperator.EQ, Number(sQuery))
-				SupplierFilters.addFilter(this, filter)
+				SupplierFilters.addFilter(filter)
 			}
 
-			console.log(sQuery)
-
-			if (sQuery && sQuery.length > 0) {
+			if (!isSearchingSupplierID && sQuery && sQuery.length > 0) {
 				const filter = new Filter(field, FilterOperator.Contains, sQuery);
-				SupplierFilters.addFilter(this, filter)
+				SupplierFilters.addFilter(filter)
 			} 
 			
 			if (!sQuery || sQuery.length === 0) {
 				// remove filter
-				SupplierFilters.removeFilter(this, field)
+				SupplierFilters.removeFilter(field)
 			}
 
-			const currentFilters = SupplierFilters.getFiltersModel(this).oData
-			console.log({ currentFilters })
+			const currentFilters = SupplierFilters.getFiltersModel().oData
+			console.log({currentFilters})
 
 			// update list binding
 			const oList = this.byId("suppliersTable");

@@ -3,25 +3,30 @@ sap.ui.define([
 ], (JSONModel) => {
 
     return {
-        setInitModelLocalData(oController, oFilters) {
-            let oFiltersModel = oController.getOwnerComponent().getModel(this.getModelNames().Filters)
+        init (oController) {
+            this._oController = oController
+            this.setInitModelLocalData([])
+        },
+
+        setInitModelLocalData(oFilters) {
+            let oFiltersModel = this._oController.getOwnerComponent().getModel(this.getModelNames().Filters)
 
             if (!oFiltersModel) {
                 const oModel = new JSONModel([]);
                 oModel.setSizeLimit(1000000);
-                oController.getOwnerComponent().setModel(oModel, this.getModelNames().Filters);
-                oFiltersModel = oController.getOwnerComponent().getModel(this.getModelNames().Filters);
+                this._oController.getOwnerComponent().setModel(oModel, this.getModelNames().Filters);
+                oFiltersModel = this._oController.getOwnerComponent().getModel(this.getModelNames().Filters);
             }
 
             oFiltersModel.setData(oFilters)
         },
 
-        getFiltersModel(oController) {
-            return oController.getOwnerComponent().getModel(this.getModelNames().Filters)
+        getFiltersModel() {
+            return this._oController.getOwnerComponent().getModel(this.getModelNames().Filters)
         },
 
-        addFilter(oController, oFilter) {
-            const oFiltersModel = this.getFiltersModel(oController)
+        addFilter(oFilter) {
+            const oFiltersModel = this.getFiltersModel(this._oController)
             const oFilters = oFiltersModel.getData()
 
             // if exist filter
@@ -41,8 +46,8 @@ sap.ui.define([
             oFiltersModel.setData(oFilters)
         },
 
-        removeFilter(oController, oFilter) {
-            const oFiltersModel = this.getFiltersModel(oController)
+        removeFilter(oFilter) {
+            const oFiltersModel = this.getFiltersModel(this._oController)
             const oFilters = oFiltersModel.getData()
 
             const indexFilter = oFilters.findIndex((filter) => {

@@ -10,28 +10,38 @@
             editable="true"
             layout="ResponsiveGridLayout">
             <f:content>
-                <!-- <Label text="Product ID" />
-                <Input value="{newProduct>/ProductID}" /> -->
-                
+                <Label text="Product ID" />
+                <Input value="{NewProduct>/ProductName}" />
+
                 <Label text="Product Name" />
-                <Input value="{newProduct>/ProductName}" />
-                
+                <Input value="{NewProduct>/ProductName}" />
+
                 <Label text="Unit Price" />
-                <Input value="{newProduct>/UnitPrice}" type="Number" />
-                
+                <Input value="{NewProduct>/UnitPrice}" type="Number" />
+
                 <Label text="Units In Stock" />
-                <Input value="{newProduct>/UnitsInStock}" type="Number" />
-                
+                <Input value="{NewProduct>/UnitsInStock}" type="Number" />
+
                 <Label text="Discontinued" />
-                <CheckBox selected="{newProduct>/Discontinued}" />
+                <CheckBox selected="{NewProduct>/Discontinued}" />
+
+                <Select
+                    forceSelection="false"
+                    selectedKey="{/SelectedProduct}"
+                    items="{
+						path: 'Suppliers>/',
+						sorter: { path: 'Name' }
+					}">
+                    <core:Item key="{Suppliers>SupplierID}" text="{Suppliers>SupplierID}" />
+                </Select>
             </f:content>
         </f:SimpleForm>
         <buttons>
-            <Button 
+            <Button
                 text="Save"
                 type="Emphasized"
                 press="onSaveNewProduct" />
-            <Button 
+            <Button
                 text="Cancel"
                 press="onCancelNewProduct" />
         </buttons>

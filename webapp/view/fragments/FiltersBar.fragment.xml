@@ -64,15 +64,34 @@
                     <form:FormElement label="Company Name">
                         <form:fields>
                             <Input
-                                placeholder="Search"
+                                placeholder="Ma Maison"
                                 liveChange=".onSearch($event, 'CompanyName')"
+                                width="100%"
+                            />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Contact Name">
+                        <form:fields>
+                            <Input
+                                placeholder="Elio Rossi"
+                                liveChange=".onSearch($event, 'ContactName')"
+                                width="100%"
+                            />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Contact Title">
+                        <form:fields>
+                            <Input
+                                placeholder="Marketing Manager"
+                                liveChange=".onSearch($event, 'ContactTitle')"
                                 width="100%"
                             />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement label="Address">
                         <form:fields>
-                            <Input value="{Address}" liveChange=".onSearch($event, 'Address')" />
+                            <Input value="{Address}" liveChange=".onSearch($event, 'Address')"
+                                placeholder="707 Oxford Rd" />
                             <!-- <Input value="{HouseNumber}">
                                 <layoutData>
                                     <l:GridData span="XL1 L2 M2 S4" />
@@ -80,14 +99,16 @@
                             </Input> -->
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement label="ZIP Code/City">
+                    <form:FormElement label="Postal Code/City">
                         <form:fields>
-                            <Input value="{ZIPCode}" liveChange=".onSearch($event, 'PostalCode')">
+                            <Input value="{ZIPCode}" liveChange=".onSearch($event, 'PostalCode')"
+                                placeholder="70117">
                                 <layoutData>
                                     <l:GridData span="XL1 L2 M2 S4" />
                                 </layoutData>
                             </Input>
-                            <Input value="{City}" liveChange=".onSearch($event, 'City')" />
+                            <Input value="{City}" liveChange=".onSearch($event, 'City')"
+                                placeholder="London" />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement label="Country">
