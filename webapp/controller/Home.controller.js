@@ -1,31 +1,37 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/library",
-    "com/bootcamp/sapui5/finalproject/utils/Home.utils",
-    "com/bootcamp/sapui5/finalproject/utils/Routes.utils",
+	"com/bootcamp/sapui5/finalproject/utils/Home.utils",
+	"com/bootcamp/sapui5/finalproject/utils/Routes.utils",
 	"sap/ui/table/RowAction",
 	"sap/ui/table/RowActionItem",
-], (Controller, CoreLibrary, HomeUtils, RoutesUtils, RowAction, RowActionItem,) => {
+	"com/bootcamp/sapui5/finalproject/utils/SupplierFilters.utils",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"sap/ui/model/json/JSONModel",
+], (Controller, CoreLibrary, HomeUtils, RoutesUtils, RowAction, RowActionItem, SupplierFilters, Filter, FilterOperator) => {
 	const SortOrder = CoreLibrary.SortOrder;
-    return Controller.extend("com.bootcamp.sapui5.finalproject.controller.Home", {
+	return Controller.extend("com.bootcamp.sapui5.finalproject.controller.Home", {
 		onInit: async function() {
 			this.oModelNames = HomeUtils.getModelNames()
-			
-            this.oRouteNames = RoutesUtils.getRouteNames()
 
-            this.oRouter = this.getOwnerComponent().getRouter();
+			this.oRouteNames = RoutesUtils.getRouteNames()
 
-            try {
-                const oDatos = await HomeUtils.getDataSuppliers([])
+			this.oRouter = this.getOwnerComponent().getRouter()
 
-                const [{ results }] = oDatos
+			SupplierFilters.setInitModelLocalData(this, [])
 
-                await HomeUtils.setSuppliersModel(this, results);
-            } catch (error) {
-                MessageToast.show("Error al obtener los datos", {
-                    width: "auto"
-                })
-            }
+			try {
+				const oDatos = await HomeUtils.getDataSuppliers([])
+
+				const [{ results }] = oDatos
+
+				await HomeUtils.setSuppliersModel(this, results);
+			} catch (error) {
+				MessageToast.show("Error al obtener los datos", {
+					width: "auto"
+				})
+			}
 
 			const fnPress = this.onPressSupplierCell.bind(this);
 
@@ -34,13 +40,15 @@ sap.ui.define([
 					key: "Navigation",
 					text: "Navigation",
 					handler: () => {
-						const oTemplate = new RowAction({items: [
-							new RowActionItem({
-								type: "Navigation",
-								press: fnPress,
-								visible: "{Available}"
-							})
-						]});
+						const oTemplate = new RowAction({
+							items: [
+								new RowActionItem({
+									type: "Navigation",
+									press: fnPress,
+									visible: "{Available}"
+								})
+							]
+						});
 						return [1, oTemplate];
 					}
 				}
@@ -50,7 +58,7 @@ sap.ui.define([
 		},
 
 		switchState: function(sKey) {
-			const oTable = this.byId("table");
+			const oTable = this.byId("suppliersTable");
 			let iCount = 0;
 			let oTemplate = oTable.getRowActionTemplate();
 			if (oTemplate) {
@@ -71,7 +79,7 @@ sap.ui.define([
 			oTable.setRowActionCount(iCount);
 		},
 
-		clearAllSortings: function(oEvent) {
+		clearAllSortings() {
 			const oTable = this.byId("table");
 			oTable.getBinding().sort(null);
 			this._resetSortingState();
@@ -85,14 +93,49 @@ sap.ui.define([
 			}
 		},
 
-		onPressSupplierCell (oEvent) {
+		onPressSupplierCell: function(oEvent) {
 			const oRow = oEvent.getParameter("row")
 
 			const SupplierID = this.getView().getModel().getProperty("SupplierID", oRow.getBindingContext());
 
-            this.oRouter.navTo(this.oRouteNames.details, {
-                SupplierID
-            });
-        }
-    });
+			this.oRouter.navTo(this.oRouteNames.details, {
+				SupplierID
+			});
+		},
+
+		onCancelNewProduct: function() {
+			this.oDialog.close();
+		},
+
+		onSearch: function(oEvent, field) {
+			// add filter for search
+			// const aFilters = [];
+			const sQuery = oEvent.getSource().getValue()
+
+			if (field === 'SupplierID') {
+				const filter = new Filter(field, FilterOperator.EQ, Number(sQuery))
+				SupplierFilters.addFilter(this, filter)
+			}
+
+			console.log(sQuery)
+
+			if (sQuery && sQuery.length > 0) {
+				const filter = new Filter(field, FilterOperator.Contains, sQuery);
+				SupplierFilters.addFilter(this, filter)
+			} 
+			
+			if (!sQuery || sQuery.length === 0) {
+				// remove filter
+				SupplierFilters.removeFilter(this, field)
+			}
+
+			const currentFilters = SupplierFilters.getFiltersModel(this).oData
+			console.log({ currentFilters })
+
+			// update list binding
+			const oList = this.byId("suppliersTable");
+			const oBinding = oList.getBinding("rows");
+			oBinding.filter(currentFilters, "Application");
+		},
+	});
 });

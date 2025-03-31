@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="dialogNewProduct"
+        title="Create New Product"
+        contentWidth="30rem">
+        <f:SimpleForm
+            editable="true"
+            layout="ResponsiveGridLayout">
+            <f:content>
+                <!-- <Label text="Product ID" />
+                <Input value="{newProduct>/ProductID}" /> -->
+                
+                <Label text="Product Name" />
+                <Input value="{newProduct>/ProductName}" />
+                
+                <Label text="Unit Price" />
+                <Input value="{newProduct>/UnitPrice}" type="Number" />
+                
+                <Label text="Units In Stock" />
+                <Input value="{newProduct>/UnitsInStock}" type="Number" />
+                
+                <Label text="Discontinued" />
+                <CheckBox selected="{newProduct>/Discontinued}" />
+            </f:content>
+        </f:SimpleForm>
+        <buttons>
+            <Button 
+                text="Save"
+                type="Emphasized"
+                press="onSaveNewProduct" />
+            <Button 
+                text="Cancel"
+                press="onCancelNewProduct" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

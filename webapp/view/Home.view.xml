@@ -4,15 +4,61 @@
     xmlns:core="sap.ui.core"
     xmlns:m="sap.m"
     height="100%"
+    xmlns:f="sap.f"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:smartTable="sap.ui.comp.smarttable"
 >
     <m:Page
         showHeader="false"
         enableScrolling="false"
         class="sapUiContentPadding"
     >
+
+        <core:Fragment
+            fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.FiltersBar"
+            type="XML"
+        />
+
         <core:Fragment
             fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.SuppliersTable"
             type="XML"
         />
     </m:Page>
 </mvc:View>
+
+<!-- <mvc:View
+    controllerName="com.bootcamp.sapui5.finalproject.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:m="sap.m"
+    height="100%"
+    xmlns:f="sap.f"
+    xmlns:mdc="sap.ui.mdc"
+    xmlns:mdct="sap.ui.mdc.table"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+>
+    <smartTable:SmartTable 
+        id="suppliersTable"
+        entitySet="Suppliers" 
+        tableType="ResponsiveTable" 
+        enableExport="true" 
+        beforeExport="onBeforeExport"
+        useVariantManagement="true" 
+        useTablePersonalisation="true" 
+        header="Suppliers"
+        showRowCount="true" 
+        persistencyKey="SuppliersSmartTable" 
+        initiallyVisibleFields="SupplierID,CompanyName,ContactName,ContactTitle,Country,City"
+        enableAutoBinding="true"
+        demandPopin="true" 
+        class="sapUiResponsiveContentPadding" 
+        showDetailsButton="true"
+        enableAutoColumnWidth="true" 
+        editTogglable="true"
+        initialNoDataText="Loading Suppliers..."
+        smartFilterId="smartFilterBar" />
+
+</mvc:View> -->

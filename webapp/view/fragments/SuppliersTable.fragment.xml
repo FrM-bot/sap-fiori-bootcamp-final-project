@@ -5,7 +5,7 @@
     xmlns="sap.ui.table"
 >
     <Table
-        id="table"
+        id="suppliersTable"
         selectionMode="None"
         rows="{/Suppliers}"
         sort="sortDeliveryDate"
@@ -33,7 +33,7 @@
             >
                 <m:Label text="Supplier ID" />
                 <template>
-                    <m:Text text="{SupplierID}" wrapping="false"  />
+                    <m:Text text="{SupplierID}" wrapping="false" />
                 </template>
             </Column>
 
@@ -47,7 +47,6 @@
                     <m:Text
                         text="{CompanyName}"
                         wrapping="false"
-                        
                     />
                 </template>
             </Column>
@@ -150,7 +149,5 @@
                 </template>
             </Column>
         </columns>
-
     </Table>
-
 </core:FragmentDefinition>
