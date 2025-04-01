@@ -1,20 +1,19 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/library",
-	"com/bootcamp/sapui5/finalproject/utils/Home.utils",
+	"com/bootcamp/sapui5/finalproject/utils/Suppliers.utils",
 	"com/bootcamp/sapui5/finalproject/utils/Routes.utils",
 	"sap/ui/table/RowAction",
 	"sap/ui/table/RowActionItem",
 	"com/bootcamp/sapui5/finalproject/utils/SupplierFilters.utils",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/ui/model/json/JSONModel",
-], (Controller, CoreLibrary, HomeUtils, RoutesUtils, RowAction, RowActionItem, SupplierFilters, Filter, FilterOperator) => {
+	"com/bootcamp/sapui5/finalproject/utils/Products.utils",
+	"com/bootcamp/sapui5/finalproject/utils/Categories.utils",
+], (Controller, CoreLibrary, SuppliersUtils, RoutesUtils, RowAction, RowActionItem, SupplierFilters, Filter, FilterOperator, ProductsUtils, CategoriesUtils) => {
 	const SortOrder = CoreLibrary.SortOrder;
 	return Controller.extend("com.bootcamp.sapui5.finalproject.controller.Home", {
 		onInit: async function() {
-			this.oModelNames = HomeUtils.getModelNames()
-
 			this.oRouteNames = RoutesUtils.getRouteNames()
 
 			this.oRouter = this.getOwnerComponent().getRouter()
@@ -22,11 +21,12 @@ sap.ui.define([
 			SupplierFilters.init(this)
 
 			try {
-				const oDatos = await HomeUtils.getDataSuppliers([])
+				const oSuppliers = await SuppliersUtils.getDataSuppliers([])
 
-				const [{ results }] = oDatos
+				const [{ results: suppliersResults }] = oSuppliers
 
-				await HomeUtils.setSuppliersModel(this, results);
+				await SuppliersUtils.setSuppliersModel(this, suppliersResults);
+
 			} catch (error) {
 				MessageToast.show("Error al obtener los datos", {
 					width: "auto"
@@ -58,38 +58,38 @@ sap.ui.define([
 		},
 
 		switchState: function(sKey) {
-			const oTable = this.byId("suppliersTable");
-			let iCount = 0;
-			let oTemplate = oTable.getRowActionTemplate();
+			const oTable = this.byId("suppliersTable")
+			let iCount = 0
+			let oTemplate = oTable.getRowActionTemplate()
 			if (oTemplate) {
-				oTemplate.destroy();
-				oTemplate = null;
+				oTemplate.destroy()
+				oTemplate = null
 			}
 
 			for (let i = 0; i < this.modes.length; i++) {
 				if (sKey === this.modes[i].key) {
-					const aRes = this.modes[i].handler();
-					iCount = aRes[0];
-					oTemplate = aRes[1];
-					break;
+					const aRes = this.modes[i].handler()
+					iCount = aRes[0]
+					oTemplate = aRes[1]
+					break
 				}
 			}
 
-			oTable.setRowActionTemplate(oTemplate);
-			oTable.setRowActionCount(iCount);
+			oTable.setRowActionTemplate(oTemplate)
+			oTable.setRowActionCount(iCount)
 		},
 
 		clearAllSortings() {
-			const oTable = this.byId("suppliersTable");
-			oTable.getBinding().sort(null);
-			this._resetSortingState();
+			const oTable = this.byId("suppliersTable")
+			oTable.getBinding().sort(null)
+			this._resetSortingState()
 		},
 
 		_resetSortingState: function() {
-			const oTable = this.byId("suppliersTable");
-			const aColumns = oTable.getColumns();
+			const oTable = this.byId("suppliersTable")
+			const aColumns = oTable.getColumns()
 			for (let i = 0; i < aColumns.length; i++) {
-				aColumns[i].setSortOrder(SortOrder.None);
+				aColumns[i].setSortOrder(SortOrder.None)
 			}
 		},
 
@@ -108,8 +108,6 @@ sap.ui.define([
 		},
 
 		onSearch: function(oEvent, field) {
-			// add filter for search
-			// const aFilters = [];
 			const sQuery = oEvent.getSource().getValue()
 
 			const isSearchingSupplierID = field === 'SupplierID'

@@ -11,7 +11,7 @@
             layout="ResponsiveGridLayout">
             <f:content>
                 <Label text="Product ID" />
-                <Input value="{NewProduct>/ProductName}" />
+                <Input value="{NewProduct>/ProductID}" enabled="false" />
 
                 <Label text="Product Name" />
                 <Input value="{NewProduct>/ProductName}" />
@@ -22,17 +22,21 @@
                 <Label text="Units In Stock" />
                 <Input value="{NewProduct>/UnitsInStock}" type="Number" />
 
+                <Label text="Quantity Per Unit" />
+                <Input value="{NewProduct>/QuantityPerUnit}" />
+
                 <Label text="Discontinued" />
                 <CheckBox selected="{NewProduct>/Discontinued}" />
-
+                
+                <Label text="Category" />
                 <Select
                     forceSelection="false"
-                    selectedKey="{/SelectedProduct}"
+                    selectedKey="{NewProduct>/CategoryID}"
                     items="{
-						path: 'Suppliers>/',
-						sorter: { path: 'Name' }
+						path: 'Categories>/',
+						sorter: { path: 'CategoryName' }
 					}">
-                    <core:Item key="{Suppliers>SupplierID}" text="{Suppliers>SupplierID}" />
+                    <core:Item key="{Categories>CategoryID}" text="{Categories>CategoryName}" />
                 </Select>
             </f:content>
         </f:SimpleForm>

@@ -1,9 +1,10 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "com/bootcamp/sapui5/finalproject/model/models",
-    "com/bootcamp/sapui5/finalproject/utils/Home.utils",
-    "com/bootcamp/sapui5/finalproject/utils/Details.utils"
-], (UIComponent, models, HomeUtils) => {
+    "com/bootcamp/sapui5/finalproject/utils/Suppliers.utils",
+    "com/bootcamp/sapui5/finalproject/utils/Products.utils",
+    "com/bootcamp/sapui5/finalproject/utils/Categories.utils"
+], (UIComponent, models, SuppliersUtils, ProductsUtils, CategoriesUtils) => {
 
     return UIComponent.extend("com.bootcamp.sapui5.finalproject.Component", {
         metadata: {
@@ -27,7 +28,9 @@ sap.ui.define([
         },
 
         setInitModel: function () {
-            HomeUtils.init(this.getModel())
+            SuppliersUtils.init(this.getModel())
+            ProductsUtils.init(this.getModel())
+            CategoriesUtils.init(this.getModel())
         }
     });
 });

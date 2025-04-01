@@ -1,8 +1,9 @@
 <core:FragmentDefinition
-    xmlns="sap.m"
+    xmlns:m="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns="sap.ui.table"
 >
-    <Table
+    <!-- <Table
         inset="false"
         items="{
                 path: 'Products',
@@ -13,25 +14,25 @@
     >
         <columns>
             <Column>
-                <Text text="{i18n>ProductID}" />
+                <m:Text text="{i18n>ProductID}" />
             </Column>
             <Column>
-                <Text text="{i18n>CategoryID}" />
+                <m:Text text="{i18n>CategoryID}" />
             </Column>
             <Column>
-                <Text text="{i18n>Product}" />
+                <m:Text text="{i18n>Product}" />
             </Column>
             <Column>
-                <Text text="{i18n>UnitPrice}" />
+                <m:Text text="{i18n>UnitPrice}" />
             </Column>
             <Column>
-                <Text text="{i18n>UnitsInStock}" />
+                <m:Text text="{i18n>UnitsInStock}" />
             </Column>
             <Column>
-                <Text text="{i18n>QuantityPerUnit}" />
+                <m:Text text="{i18n>QuantityPerUnit}" />
             </Column>
             <Column>
-                <Text text="{i18n>SupplierID}" />
+                <m:Text text="{i18n>SupplierID}" />
             </Column>
         </columns>
         <items>
@@ -42,11 +43,11 @@
                 bindingContext="{Products}"
             >
                 <cells>
-                    <Text text="{ProductID}" />
+                    <m:Text text="{ProductID}" />
 
-                    <Text text="{CategoryID}" />
+                    <m:Text text="{CategoryID}" />
 
-                    <Text text="{ProductName}" />
+                    <m:Text text="{ProductName}" />
 
                     <ObjectNumber
                         number="{
@@ -56,11 +57,108 @@
                         }"
                         unit="USD"
                     />
-                    <Text text="{UnitsInStock}" />
-                    <Text text="{QuantityPerUnit}" />
-                    <Text text="{SupplierID}" />
+                    <m:Text text="{UnitsInStock}" />
+                    <m:Text text="{QuantityPerUnit}" />
+                    <m:Text text="{SupplierID}" />
                 </cells>
             </ColumnListItem>
         </items>
+    </Table> -->
+
+    <Table
+        id="table"
+        selectionMode="None"
+        rows="{Products}"
+        sort="sortDeliveryDate"
+        rowActionCount="1"
+        ariaLabelledBy="title">
+        <extension>
+            <m:OverflowToolbar style="Clear">
+                <m:Title id="title" text="Products" />
+                <m:ToolbarSpacer />
+                <!-- Button for new  Product -->
+                <m:Button
+                    id="newProductButton"
+                    text="New Product"
+                    press="onOpenNewProductModal"
+                    visible="{= ${viewModel>/isEditable} &amp;&amp; ${viewModel>/isNewProduct} }"
+                />
+            </m:OverflowToolbar>
+        </extension>
+        <columns>
+            <Column
+                id="productId"
+                width="6rem"
+                sortProperty="ProductID">
+                <m:Label text="{i18n>ProductID}" />
+                <template>
+                    <m:Text text="{ProductID}" wrapping="false" />
+                </template>
+            </Column>
+            <Column
+                id="categoryName"
+                width="6rem"
+                sortProperty="CategoryName">
+                <m:Label text="{i18n>CategoryName}" />
+                <template>
+                    <m:Text text="{Category/CategoryName}" wrapping="false" />
+                </template>
+            </Column>
+            <Column
+                id="name"
+                width="11rem"
+                sortProperty="ProductName">
+                <m:Label text="{i18n>Product}" />
+                <template>
+                    <m:Text text="{ProductName}" wrapping="false" />
+                </template>
+            </Column>
+            <Column
+                id="unitPrice"
+                width="8rem"
+                hAlign="End"
+                sortProperty="UnitPrice">
+                <m:Label text="{i18n>UnitPrice}" />
+                <template>
+                    <m:ObjectNumber
+                        number="{
+                            parts:[{path:'UnitPrice'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: true}
+                        }"
+                        unit="USD"
+                    />
+                </template>
+            </Column>
+            <Column
+                id="unitsInStock"
+                width="8rem"
+                hAlign="End"
+                sortProperty="UnitsInStock">
+                <m:Label text="{i18n>UnitsInStock}" />
+                <template>
+                    <m:Text text="{UnitsInStock}" wrapping="false" />
+                </template>
+            </Column>
+            <Column
+                id="quantityPerUnit"
+                width="9rem"
+                sortProperty="QuantityPerUnit">
+                <m:Label text="{i18n>QuantityPerUnit}" />
+                <template>
+                    <m:Text text="{QuantityPerUnit}" wrapping="false" />
+                </template>
+            </Column>
+        </columns>
+        <rowActionTemplate>
+            <RowAction>
+                <items>
+                    <RowActionItem
+                        type="Navigation"
+                        press="onOpenPopoverDialog"
+                    />
+                </items>
+            </RowAction>
+        </rowActionTemplate>
     </Table>
 </core:FragmentDefinition>

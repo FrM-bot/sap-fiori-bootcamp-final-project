@@ -1,7 +1,7 @@
 sap.ui.define([ 
-    'com/bootcamp/sapui5/finalproject/services/Home.services',
+    'com/bootcamp/sapui5/finalproject/services/Suppliers.services',
     "sap/ui/model/json/JSONModel"
-], (HomeService, JSONModel) => {
+], (SuppliersService, JSONModel) => {
 
     return {
         init: function(onNorthwindModel) {
@@ -9,7 +9,7 @@ sap.ui.define([
         },
 
         getDataSuppliers: async function(onFilters) {
-            return HomeService.getSuppliers(this._onNorthwindModel, onFilters)
+            return SuppliersService.getSuppliers(this._onNorthwindModel, onFilters)
         },
 
         setSuppliersModel: async function(oController, oDatos) {
@@ -23,6 +23,10 @@ sap.ui.define([
             }
 
             oListModel.setData(oDatos)
+        },
+
+        getSuppliersModel: function(oController) {
+            return oController.getOwnerComponent().getModel(this.getModelNames().Suppliers)
         },
 
         getModelNames() {

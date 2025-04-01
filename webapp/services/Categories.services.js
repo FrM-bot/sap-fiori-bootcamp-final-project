@@ -1,14 +1,9 @@
-const Endpoints = {
-    suppliers:"/Suppliers"
-}
-
 sap.ui.define([], () => {
-
     return {
-        async getSuppliers (onModel, onFilters) {
+        async getCategories(onModel, onFilters) {
             const aPromiseRequest = [
                 new Promise((resolve, reject) => {
-                    onModel.read(Endpoints.suppliers, {
+                    onModel.read(this.getEndpoints().categories, {
                         filters: onFilters,
                         success: resolve,
                         error: reject
@@ -17,6 +12,12 @@ sap.ui.define([], () => {
             ]
 
             return Promise.all(aPromiseRequest)
+        },
+
+        getEndpoints() {
+            return {
+                categories: "/Categories"
+            }
         }
     }
 })

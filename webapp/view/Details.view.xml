@@ -17,13 +17,6 @@
             fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.FormSupplierDetails"
             type="XML"
         />
-        <!-- Button for new  Product -->
-        <Button
-            id="newProductButton"
-            text="New Product"
-            press="onOpenNewProductModal"
-            visible="{= ${viewModel>/isEditable} &amp;&amp; ${viewModel>/isNewProduct} }"
-        />
         <!-- Products Table -->
         <core:Fragment
             fragmentName="com.bootcamp.sapui5.finalproject.view.fragments.ProductsTable"

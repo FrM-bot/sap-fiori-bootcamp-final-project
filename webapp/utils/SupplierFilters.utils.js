@@ -8,6 +8,7 @@ sap.ui.define([
             this.setInitModelLocalData([])
         },
 
+        // function to set initial model local data
         setInitModelLocalData(oFilters) {
             let oFiltersModel = this._oController.getOwnerComponent().getModel(this.getModelNames().Filters)
 
@@ -21,10 +22,12 @@ sap.ui.define([
             oFiltersModel.setData(oFilters)
         },
 
+        // function to get filters model
         getFiltersModel() {
             return this._oController.getOwnerComponent().getModel(this.getModelNames().Filters)
         },
 
+        // function to add filter
         addFilter(oFilter) {
             const oFiltersModel = this.getFiltersModel(this._oController)
             const oFilters = oFiltersModel.getData()
@@ -46,6 +49,7 @@ sap.ui.define([
             oFiltersModel.setData(oFilters)
         },
 
+        // function to remove filter
         removeFilter(oFilter) {
             const oFiltersModel = this.getFiltersModel(this._oController)
             const oFilters = oFiltersModel.getData()
