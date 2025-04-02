@@ -38,12 +38,6 @@
             <Label text="Units In Stock" />
             <Text text="{DialogProduct>/UnitsInStock}" />
 
-            <Label text="Units On Order" />
-            <Text text="{DialogProduct>/UnitsOnOrder}" />
-
-            <Label text="Reorder Level" />
-            <Text text="{DialogProduct>/ReorderLevel}" />
-
             <Label text="Discontinued" />
             <Text text="{= ${DialogProduct>/Discontinued} ? 'Yes' : 'No' }" />
         </f:content>

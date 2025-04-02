@@ -25,20 +25,31 @@ sap.ui.define([
                 return product;
             });
             
-            let oListModel = oController.getOwnerComponent().getModel(this.getModelNames().Products)
+            let oProductsModel = oController.getOwnerComponent().getModel(this.getModelNames().Products)
 
-            if (!oListModel) {
+            if (!oProductsModel) {
                 const oModel = new JSONModel([]);
                 oModel.setSizeLimit(1000000);	
                 oController.getOwnerComponent().setModel(oModel, this.getModelNames().Products);  
-                oListModel = oController.getOwnerComponent().getModel(this.getModelNames().Products);
+                oProductsModel = oController.getOwnerComponent().getModel(this.getModelNames().Products);
             }
 
-            oListModel.setData(processedData);
+            oProductsModel.setData(processedData)
+        },
+
+        addNewProduct: function(oController, oNewProduct) {
+            const oProductsModel = this.getProductsModel(oController)
+            const oCurrentProducts = oProductsModel.getData()
+            const oNewProductList = oCurrentProducts.concat(oNewProduct)
+            oProductsModel.setData(oNewProductList)
         },
         
         getProductsModel: function(oController) {
             return oController.getOwnerComponent().getModel(this.getModelNames().Products)
+        },
+
+        getNewProductModel: function(oController) {
+            return oController.getOwnerComponent().getModel(this.getModelNames().NewProduct)
         },
 
         setNewProductModel: async function(oController, oDatos) {

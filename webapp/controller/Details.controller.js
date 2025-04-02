@@ -7,6 +7,8 @@ sap.ui.define(
 		"sap/ui/core/UIComponent",
 		"com/bootcamp/sapui5/finalproject/utils/Products.utils",
 		"com/bootcamp/sapui5/finalproject/utils/Categories.utils",
+		"sap/ui/model/Filter",
+		"sap/ui/model/FilterOperator",
 	],
 	(
 		Controller,
@@ -16,6 +18,8 @@ sap.ui.define(
 		UIComponent,
 		ProductsUtils,
 		CategoriesUtils,
+		Filter,
+		FilterOperator,
 	) => {
 		return Controller.extend(
 			"com.bootcamp.sapui5.finalproject.controller.Details",
@@ -36,14 +40,19 @@ sap.ui.define(
 					const [{ results: categoriesResults }] = oCategories;
 					await CategoriesUtils.setCategoriesModel(this, categoriesResults);
 
-					// const oProducts = await ProductsUtils.getDataProducts([])
+					const oSupplierIDFilter = new Filter(
+						"SupplierID",
+						FilterOperator.EQ,
+						this._oSupplierID,
+					);
 
-					// const [{ results: productsResults }] = oProducts
+					const oProducts = await ProductsUtils.getDataProducts([
+						oSupplierIDFilter,
+					]);
 
-					// console.log({ productsResults })
+					const [{ results: productsResults }] = oProducts;
 
-					//  get the supplier ID from the route
-					const { SupplierID } = this.getRouter().getParameters();
+					await ProductsUtils.setProductsModel(this, productsResults);
 
 					ProductsUtils.setNewProductModel(this, {
 						ProductID: 0,
@@ -52,10 +61,8 @@ sap.ui.define(
 						UnitsInStock: 0,
 						Discontinued: false,
 						CategoryID: 0,
-						SupplierID
-					})
-
-					console.log(this.getOwnerComponent());
+						SupplierID: this._oSupplierID,
+					});
 				},
 
 				getRouter() {
@@ -80,11 +87,14 @@ sap.ui.define(
 				_onObjectMatched(oEvent) {
 					const SupplierID = oEvent.getParameter("arguments").SupplierID;
 
+					this._oSupplierID = SupplierID;
+
+					// Bind the supplier
 					this.getView().bindElement({
 						path: `/Suppliers(${SupplierID})`,
-						parameters: {
-							expand: "Products/Category",
-						},
+						// parameters: {
+						// 	expand: "Products/Category",
+						// },
 					});
 				},
 
@@ -92,12 +102,13 @@ sap.ui.define(
 					// Obtener el ítem seleccionado (fila)
 					const oItem = oEvent.getSource();
 
-					// Obtener el contexto de binding del ítem
-					const oBindingContext = oItem.getBindingContext();
-
+					// Obtener el contexto de binding del ítem - especificando el modelo Products
+					const oBindingContext = oItem.getBindingContext("Products");
+					
 					// Obtener el objeto completo del producto
 					const oProduct = oBindingContext.getObject();
-
+					
+					console.log({oItem, oProduct, oBindingContext});
 					// Crear un modelo específico para el diálogo con los datos del producto
 					DetailsUtils.setDialogProductModel(this, oProduct);
 
@@ -137,61 +148,173 @@ sap.ui.define(
 				onCancelNewProduct() {
 					this.oDialog.close();
 				},
-				
-				onSaveNewProduct() {
-					// Obtener el modelo de nuevo producto
-					const oNewProductModel = this.getView().getModel("NewProduct");
-					const oNewProductData = oNewProductModel.getData();
+
+				// Funciones de validación para el formulario de nuevo producto
+				onValidateProductName: function(oEvent) {
+					const oInput = oEvent.getSource();
+					const sValue = oInput.getValue().trim();
 					
+					if (!sValue) {
+						oInput.setValueState("Error");
+						this._updateSaveButtonState();
+						return;
+					}
+					
+					oInput.setValueState("None");
+					this._updateSaveButtonState();
+				},
+				
+				onValidateUnitPrice: function(oEvent) {
+					const oInput = oEvent.getSource();
+					const sValue = oInput.getValue().trim();
+					const nValue = Number.parseFloat(sValue);
+
+					console.log({sValue, nValue});
+					
+					if (Number.isNaN(nValue) || nValue <= 0) {
+						oInput.setValueState("Error");
+						this._updateSaveButtonState();
+						return;
+					}
+					
+					oInput.setValueState("None");
+					this._updateSaveButtonState();
+				},
+				
+				onValidateUnitsInStock: function(oEvent) {
+					const oInput = oEvent.getSource();
+					const sValue = oInput.getValue().trim();
+					const nValue = Number.parseInt(sValue, 10);
+					
+					if (Number.isNaN(nValue) || nValue < 0 || nValue % 1 !== 0) {
+						oInput.setValueState("Error");
+						this._updateSaveButtonState();
+						return;
+					}
+					
+					oInput.setValueState("None");
+					this._updateSaveButtonState();
+				},
+				
+				onValidateCategory: function(oEvent) {
+					const oSelect = oEvent.getSource();
+					const sValue = oSelect.getSelectedKey();
+					
+					if (!sValue) {
+						oSelect.setValueState("Error");
+						this._updateSaveButtonState();
+						return;
+					}
+					
+					oSelect.setValueState("None");
+					this._updateSaveButtonState();
+				},
+				
+				_updateSaveButtonState: function() {
+					// Obtener referencias a todos los campos obligatorios
+					const oFragment = this.oDialog;
+					
+					if (!oFragment) {
+						return;
+					}
+					
+					const oProductNameInput = oFragment.getContent()[0].getContent()[1]; // SimpleForm->Input for ProductName
+					const oUnitPriceInput = oFragment.getContent()[0].getContent()[3]; // SimpleForm->Input for UnitPrice
+					const oUnitsInStockInput = oFragment.getContent()[0].getContent()[5]; // SimpleForm->Input for UnitsInStock
+					const oCategorySelect = oFragment.getContent()[0].getContent()[11]; // SimpleForm->Select for Category
+					
+					// Verificar que todos los campos obligatorios tengan valores válidos
+					const bValid = 
+						oProductNameInput.getValue().trim() !== "" && oProductNameInput.getValueState() !== "Error" &&
+						oUnitPriceInput.getValue().trim() !== "" && oUnitPriceInput.getValueState() !== "Error" &&
+						oUnitsInStockInput.getValue().trim() !== "" && oUnitsInStockInput.getValueState() !== "Error" &&
+						oCategorySelect.getSelectedKey() !== "" && oCategorySelect.getValueState() !== "Error";
+					
+					// Actualizar estado del botón Guardar
+					const oSaveButton = oFragment.getButtons()[0];
+					oSaveButton.setEnabled(bValid);
+				},
+
+				onSaveNewProduct() {
+					// Primero valida el formulario completo
+					const oFragment = this.oDialog;
+					const oProductNameInput = oFragment.getContent()[0].getContent()[1];
+					const oUnitPriceInput = oFragment.getContent()[0].getContent()[3];
+					const oUnitsInStockInput = oFragment.getContent()[0].getContent()[5];
+					const oCategorySelect = oFragment.getContent()[0].getContent()[11];
+					
+					// Verificar cada campo individualmente para actualizar su estado visual
+					if (oProductNameInput.getValue().trim() === "") {
+						oProductNameInput.setValueState("Error");
+					}
+					
+					if (oUnitPriceInput.getValue().trim() === "") {
+						oUnitPriceInput.setValueState("Error");
+					}
+					
+					if (oUnitsInStockInput.getValue().trim() === "") {
+						oUnitsInStockInput.setValueState("Error");
+					}
+					
+					if (oCategorySelect.getSelectedKey() === "") {
+						oCategorySelect.setValueState("Error");
+					}
+					
+					// Actualiza el estado del botón (esto también verifica si todos los campos son válidos)
+					this._updateSaveButtonState();
+					
+					// Si el botón está habilitado, procedemos a guardar
+					const oSaveButton = oFragment.getButtons()[0];
+					if (!oSaveButton.getEnabled()) {
+						// Mostrar mensaje de error
+						sap.m.MessageToast.show("Please fill in all required fields correctly");
+						return;
+					}
+					
+					// Obtener el modelo de nuevo producto
+					const oNewProductModel = ProductsUtils.getNewProductModel(this);
+					const oNewProductData = oNewProductModel.getData();
+
 					// Generar un ID único para el nuevo producto (simulación)
 					const iNewProductId = Math.floor(Math.random() * 1000) + 1000;
-					
+
 					// Crear el objeto de producto
 					const oProductData = {
 						ProductID: iNewProductId,
 						ProductName: oNewProductData.ProductName,
-						UnitPrice: Number.parseFloat(oNewProductData.UnitPrice) || 0,
-						UnitsInStock: Number.parseInt(oNewProductData.UnitsInStock, 10) || 0,
+						UnitPrice: oNewProductData.UnitPrice || "0",
+						UnitsInStock:
+							Number.parseInt(oNewProductData.UnitsInStock, 10) || 0,
 						QuantityPerUnit: oNewProductData.QuantityPerUnit || "",
 						Discontinued: oNewProductData.Discontinued || false,
-						CategoryID: oNewProductData.CategoryID,
-						SupplierID: oNewProductData.SupplierID
+						CategoryID: Number(oNewProductData.CategoryID),
+						SupplierID: Number(this._oSupplierID)
 					};
-					
+
 					// Obtener la categoría seleccionada para agregarla al producto
-					const oCategoriesModel = this.getView().getModel("Categories");
-					const aCategories = oCategoriesModel.getData();
-					const oSelectedCategory = aCategories.find(cat => cat.CategoryID === oNewProductData.CategoryID);
-					
+					const oCategoriesModel = CategoriesUtils.getCategoriesModel(this);
+					const aCategories = oCategoriesModel.getData()
+
+					const oSelectedCategory = aCategories.find(
+						(cat) => cat.CategoryID === Number(oNewProductData.CategoryID),
+					)
+
 					if (oSelectedCategory) {
 						oProductData.Category = {
 							CategoryID: oSelectedCategory.CategoryID,
-							CategoryName: oSelectedCategory.CategoryName
+							CategoryName: oSelectedCategory.CategoryName,
 						};
 					}
-					
-					// Simular la creación del producto agregándolo al modelo local
-					// 1. Obtener el binding context actual (proveedor)
-					const oBindingContext = this.getView().getBindingContext();
-					const oSupplier = oBindingContext.getObject();
-					
-					// 2. Obtener la lista actual de productos del proveedor
-					const aProducts = oSupplier.Products ? [...oSupplier.Products] : [];
-					
-					// 3. Agregar el nuevo producto a la lista
-					aProducts.push(oProductData);
-					
-					// 4. Actualizar el modelo local (simulando la respuesta del servidor)
-					const oModel = this.getView().getModel();
-					const sPath = `${oBindingContext.getPath()}/Products`;
-					oModel.setProperty(sPath, aProducts);
-					
+
+					// 2. Agrego el nuevo producto
+					ProductsUtils.addNewProduct(this, oProductData);
+
 					// Cerrar el diálogo
 					this.oDialog.close();
-					
+
 					// Mostrar mensaje de éxito
-					sap.m.MessageToast.show("Producto creado con éxito (simulación)");
-					
+					sap.m.MessageToast.show("Producto creado con éxito");
+
 					// Limpiar el modelo de nuevo producto para futuras creaciones
 					oNewProductModel.setData({
 						ProductID: 0,
@@ -201,7 +324,7 @@ sap.ui.define(
 						QuantityPerUnit: "",
 						Discontinued: false,
 						CategoryID: 0,
-						SupplierID: oNewProductData.SupplierID
+						SupplierID: oNewProductData.SupplierID,
 					});
 				},
 			},

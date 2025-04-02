@@ -4,49 +4,70 @@
     xmlns:f="sap.ui.layout.form">
     <Dialog
         id="dialogNewProduct"
-        title="Create New Product"
+        title="{i18n>CreateNewProduct}"
         contentWidth="30rem">
         <f:SimpleForm
             editable="true"
             layout="ResponsiveGridLayout">
             <f:content>
-                <Label text="Product ID" />
-                <Input value="{NewProduct>/ProductID}" enabled="false" />
+                <Label text="{i18n>ProductName}" required="true" />
+                <Input 
+                    value="{NewProduct>/ProductName}" 
+                    placeholder="Enter product name"
+                    required="true"
+                    liveChange="onValidateProductName"
+                    valueStateText="Please enter a product name" />
 
-                <Label text="Product Name" />
-                <Input value="{NewProduct>/ProductName}" />
+                <Label text="{i18n>UnitPrice}" required="true" />
+                <Input 
+                    value="{NewProduct>/UnitPrice}" 
+                    type="Text" 
+                    placeholder="0.00"
+                    required="true"
+                    liveChange="onValidateUnitPrice"
+                    valueStateText="Please enter a valid positive price" />
 
-                <Label text="Unit Price" />
-                <Input value="{NewProduct>/UnitPrice}" type="Number" />
+                <Label text="{i18n>UnitsInStock}" required="true" />
+                <Input 
+                    value="{NewProduct>/UnitsInStock}" 
+                    type="Number" 
+                    placeholder="0"
+                    required="true"
+                    liveChange="onValidateUnitsInStock"
+                    valueStateText="Please enter a valid positive integer" />
 
-                <Label text="Units In Stock" />
-                <Input value="{NewProduct>/UnitsInStock}" type="Number" />
+                <Label text="{i18n>QuantityPerUnit}" />
+                <Input 
+                    value="{NewProduct>/QuantityPerUnit}"
+                    placeholder="e.g. 10 boxes x 20 bags" />
 
-                <Label text="Quantity Per Unit" />
-                <Input value="{NewProduct>/QuantityPerUnit}" />
-
-                <Label text="Discontinued" />
+                <Label text="{i18n>Discontinued}" />
                 <CheckBox selected="{NewProduct>/Discontinued}" />
                 
-                <Label text="Category" />
+                <Label text="{i18n>Category}" required="true" />
                 <Select
                     forceSelection="false"
                     selectedKey="{NewProduct>/CategoryID}"
+                    required="true"
+                    change="onValidateCategory"
+                    valueStateText="Please select a category"
                     items="{
 						path: 'Categories>/',
 						sorter: { path: 'CategoryName' }
 					}">
-                    <core:Item key="{Categories>CategoryID}" text="{Categories>CategoryName}" />
+                    <core:Item key="{Categories>CategoryID}" text="{Categories>CategoryID} - {Categories>CategoryName}" />
                 </Select>
             </f:content>
         </f:SimpleForm>
         <buttons>
             <Button
-                text="Save"
+                id="saveProductButton"
+                text="{i18n>Save}"
                 type="Emphasized"
+                enabled="false"
                 press="onSaveNewProduct" />
             <Button
-                text="Cancel"
+                text="{i18n>Cancel}"
                 press="onCancelNewProduct" />
         </buttons>
     </Dialog>
