@@ -9,6 +9,7 @@ sap.ui.define(
 		"com/bootcamp/sapui5/finalproject/utils/Categories.utils",
 		"sap/ui/model/Filter",
 		"sap/ui/model/FilterOperator",
+		"com/bootcamp/sapui5/finalproject/utils/Formatter.utils",
 	],
 	(
 		Controller,
@@ -20,10 +21,13 @@ sap.ui.define(
 		CategoriesUtils,
 		Filter,
 		FilterOperator,
+		Formatter,
 	) => {
 		return Controller.extend(
 			"com.bootcamp.sapui5.finalproject.controller.Details",
 			{
+				formatter: Formatter,
+
 				async onInit() {
 					const oRouteNames = RoutesUtils.getRouteNames();
 					this.oRouteNames = RoutesUtils.getRouteNames();

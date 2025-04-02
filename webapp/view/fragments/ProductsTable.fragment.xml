@@ -137,7 +137,14 @@
                 sortProperty="UnitsInStock">
                 <m:Label text="{i18n>UnitsInStock}" />
                 <template>
-                    <m:Text text="{Products>UnitsInStock}" wrapping="false" />
+                    <m:ObjectNumber
+                        number="{
+                            parts:[{path:'Products>UnitsInStock'}],
+                            type: 'sap.ui.model.type.Number'
+                        }"
+                        unit="Units"
+                        state="{ path: 'Products>UnitsInStock', formatter: '.formatter.getStateUnitStock' }"
+                    />
                 </template>
             </Column>
             <Column
