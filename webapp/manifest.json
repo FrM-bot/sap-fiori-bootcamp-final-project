@@ -123,5 +123,9 @@
       "id": "App",
       "async": true
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "combootcampsapui5finalproject"
   }
 }
