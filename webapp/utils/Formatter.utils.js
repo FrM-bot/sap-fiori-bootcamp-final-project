@@ -10,7 +10,7 @@ sap.ui.define([], () => {
             if (nValue <= 20) {
                 return "Error";
             }
-            if (nValue > 20 && nValue <= 100) {
+            if (nValue > 20 && nValue <= 50) {
                 return "Warning"
             }
             return "Success";
