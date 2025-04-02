@@ -40,33 +40,13 @@ sap.ui.define(
 						.getRoute(oRouteNames.details)
 						.attachPatternMatched(this._onObjectMatched, this);
 
+					// Cargar las categorías una sola vez durante la inicialización
 					const oCategories = await CategoriesUtils.getDataCategories([]);
 					const [{ results: categoriesResults }] = oCategories;
 					await CategoriesUtils.setCategoriesModel(this, categoriesResults);
 
-					const oSupplierIDFilter = new Filter(
-						"SupplierID",
-						FilterOperator.EQ,
-						this._oSupplierID,
-					);
-
-					const oProducts = await ProductsUtils.getDataProducts([
-						oSupplierIDFilter,
-					]);
-
-					const [{ results: productsResults }] = oProducts;
-
-					await ProductsUtils.setProductsModel(this, productsResults);
-
-					ProductsUtils.setNewProductModel(this, {
-						ProductID: 0,
-						ProductName: "",
-						UnitPrice: 0,
-						UnitsInStock: 0,
-						Discontinued: false,
-						CategoryID: 0,
-						SupplierID: this._oSupplierID,
-					});
+					// La carga de productos se moverá al método _onObjectMatched
+					// para que se actualice cada vez que cambie el SupplierID
 				},
 
 				getRouter() {
@@ -88,7 +68,7 @@ sap.ui.define(
 					}
 				},
 
-				_onObjectMatched(oEvent) {
+				async _onObjectMatched(oEvent) {
 					const SupplierID = oEvent.getParameter("arguments").SupplierID;
 
 					this._oSupplierID = SupplierID;
@@ -99,6 +79,34 @@ sap.ui.define(
 						// parameters: {
 						// 	expand: "Products/Category",
 						// },
+					});
+
+					// Actualizar los productos relacionados con este proveedor
+					const oSupplierIDFilter = new Filter(
+						"SupplierID",
+						FilterOperator.EQ,
+						SupplierID
+					);
+
+					// Cargar productos filtrados por el SupplierID actual
+					const oProducts = await ProductsUtils.getDataProducts([
+						oSupplierIDFilter,
+					]);
+
+					const [{ results: productsResults }] = oProducts;
+
+					// Actualizar el modelo de productos con los nuevos datos
+					await ProductsUtils.setProductsModel(this, productsResults);
+
+					// Actualizar también el modelo de nuevo producto con el SupplierID actual
+					ProductsUtils.setNewProductModel(this, {
+						ProductID: 0,
+						ProductName: "",
+						UnitPrice: 0,
+						UnitsInStock: 0,
+						Discontinued: false,
+						CategoryID: 0,
+						SupplierID: SupplierID,
 					});
 				},
 
